@@ -1,28 +1,28 @@
 with source as (
 
-    select * from {{ source('main', 'bike_data') }}
+    select * from {{ source('main', 'bike_data') }} 
 
 ),
 
 renamed as (
 
     select
-        tripduration,
+        tripduration,-- wrote delete statement to remove null values, based on definitions this field feels like key data to be useful for analysis
         starttime,
         stoptime,
-        "start station id",
+        "start station id", --decided not to delete Null Value rows in Source dbt tests due to them not being critical data fields for use of the data / refined with schema dbt tests 
         "start station name",
         "start station latitude",
         "start station longitude",
-        "end station id",
+        "end station id", --decided not to delete Null Value rows in Source dbt tests due to them not being critical data fields for use of the data / refined with schema dbt tests 
         "end station name",
         "end station latitude",
         "end station longitude",
-        bikeid,
+        bikeid, -- wrote delete statement to remove null values, based on definitions this field feels like key data to be useful for analysis 
         usertype,
         "birth year",
-        gender,
-        ride_id,
+        gender, 
+        ride_id, -- wrote delete statement to remove null values, based on definitions this field feels like key data to be useful for analysis
         rideable_type,
         started_at,
         ended_at,
@@ -30,11 +30,11 @@ renamed as (
         start_station_id,
         end_station_name,
         end_station_id,
-        start_lat,
-        start_lng,
-        end_lat,
-        end_lng,
-        member_casual,
+        start_lat, -- No Null values / did not require Delete statement for initial ingestion via sources yml
+        start_lng, -- No Null values / did not require Delete statement for initial ingestion via sources yml
+        end_lat, -- No Null values / did not require Delete statement for initial ingestion via sources yml
+        end_lng, -- No Null values / did not require Delete statement for initial ingestion via sources yml
+        member_casual, -- wrote delete statement to remove null values, based on definitions this field feels like key data to be useful for analysis
         filename
 
     from source

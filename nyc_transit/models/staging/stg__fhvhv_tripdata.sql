@@ -10,7 +10,7 @@ renamed as (
         hvfhs_license_num,
         trim(upper(dispatching_base_num)) as dispatching_base_num,
         trim(upper(originating_base_num)) as originating_base_num,
-        request_datetime,
+        request_datetime, -- Only 5 rows with Null value so deleted rows to clean data without eliminating too much data
         on_scene_datetime,
         pickup_datetime,
         dropoff_datetime,
@@ -18,7 +18,7 @@ renamed as (
         dolocationid,
         trip_miles,
         trip_time,
-        base_passenger_fare,
+        base_passenger_fare, -- Only 1 row with Null value so delted row to clean data without eliminatng too much data 
         tolls,
         bcf,
         sales_tax,
