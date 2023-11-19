@@ -13,7 +13,6 @@ renamed as (
         pulocationid,
         dolocationid,
         --sr_flag, always null so chuck it
-        --sr_flag was pulled in source and updated, removed from schema  
         trim(upper(affiliated_base_number)) as affiliated_base_number,
         filename
 

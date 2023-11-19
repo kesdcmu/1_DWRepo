@@ -8,7 +8,6 @@ renamed as (
 
     select
         -- clean up the base_num to be properly linked as foreign keys
-        -- additional claen up did not appear needed for this table after qualiy check 
         trim(upper(base_number)) as base_number,
         base_name,
         dba,

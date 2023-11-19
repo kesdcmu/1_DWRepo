@@ -7,9 +7,9 @@ with source as (
 renamed as (
 
     select
-        station, --appears to have a relationship with the bases table / created relationship with base_number
-        name, --appears to have a relationship with the bases table / created relationship with base_name
-        date::date as date, --expected the date to be unique for each location / added unique dbt test
+        station,
+        name,
+        date::date as date,
         awnd::double as awnd,
         prcp::double as prcp,
         snow::double as snow,
@@ -23,9 +23,7 @@ renamed as (
 )
 
 select 
-    station,
-    name, -- added since it appears it was removed as it did not appear in the source.yml
-    date, -- added since it appears it was removed as it did not appear in the source.yml
+    date,
     awnd,
     prcp,
     snow,
