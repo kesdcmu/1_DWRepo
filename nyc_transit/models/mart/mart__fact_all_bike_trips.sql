@@ -1,4 +1,4 @@
-SELECT
+SELECT -- Week 4 lecture 4 Code Adoptation 
     started_at_ts,
     ended_at_ts,
     datediff('minute', started_at_ts, ended_at_ts) as duration_min,

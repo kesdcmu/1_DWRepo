@@ -1,4 +1,4 @@
-with trips_renamed as 
+with trips_renamed as -- Week 4 lecture 4 Code Adoptation 
 (
 
 select 'bike' as type, started_at_ts, ended_at_ts from {{ ref('stg__bike_data') }}
