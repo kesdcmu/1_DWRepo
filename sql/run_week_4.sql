@@ -1,4 +1,4 @@
-.output answers/week-5.txt
+.output answers/week-4.txt
 .echo on
 .print nyc_transit/target/compiled/nyc_transit/analyses/bike_trips_and_duration_by_weekday.sql
 .read nyc_transit/target/compiled/nyc_transit/analyses/bike_trips_and_duration_by_weekday.sql
