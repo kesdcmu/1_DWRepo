@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+with trips_renamed as -- Week 4 lecture 4 Code Adoptation 
+=======
 with trips_renamed as 
+>>>>>>> 834546b24df8046fd3cfbbd0439eec96d396a7a5
 (
 
 select 'bike' as type, started_at_ts, ended_at_ts from {{ ref('stg__bike_data') }}

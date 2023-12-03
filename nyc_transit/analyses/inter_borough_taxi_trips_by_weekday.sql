@@ -7,6 +7,11 @@ SELECT
         COUNT(*) as total_trips,
         COUNT(CASE WHEN pulocationid <> dolocationid THEN 1 END) as inter_borough_trips,
         (COUNT(CASE WHEN pulocationid <> dolocationid THEN 1 END) * 100.0 / COUNT(*)) as inter_borough_percentage
+<<<<<<< HEAD
+    FROM {{ ref('mart__fact_all_taxi_trips') }} -- unsure if this is the correct mart 
+    GROUP BY weekday, pulocationid, dolocationid, inter_borough_trips, inter_borough_percentage
+=======
     FROM {{ ref('mart__fact_all_taxi_trips') }}
     GROUP BY weekday, pulocationid, dolocationid
+>>>>>>> 834546b24df8046fd3cfbbd0439eec96d396a7a5
 ) TO 'C:\Users\KaiES\OneDrive\Documents\1_DWRepo\answers/3_HW4inter_borough_taxi_trips_by_weekday.txt' WITH CSV HEADER; --added output for HW review 
