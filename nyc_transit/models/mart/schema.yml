@@ -109,3 +109,21 @@ models:
 
       - name: duration_sec
         description: ""
+
+  - name: mart__fact_trips_by_borough
+    description: "number of trips grouped by pickup borough"
+    columns:
+      - name: insert_timestamp	
+        description: ""
+
+      - name: event_id
+        description: ""
+
+      - name: event_type
+        description: ""
+
+      - name: user_id
+        description: ""
+
+      - name: event_timestamp
+        description: ""
