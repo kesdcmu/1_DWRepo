@@ -1,4 +1,4 @@
-D .read target/compiled/nyc_transit/analyses/zones_with_less_than_100k_trips.sql
+.read target/compiled/nyc_transit/analyses/zones_with_less_than_100k_trips.sql
 
 -- Analysis to count the number of taxi trips per zone, selecting zones with fewer than 100,000 trips
 -- Source: Adapted from Week 5 materials duckdb.org and ChatGPT

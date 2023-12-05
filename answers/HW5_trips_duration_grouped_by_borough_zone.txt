@@ -1,4 +1,4 @@
-D .read target/compiled/nyc_transit/analyses/trips_duration_grouped_by_borough_zone.sql
+.read target/compiled/nyc_transit/analyses/trips_duration_grouped_by_borough_zone.sql
 
 -- Analysis of the number of trips and average duration by borough and zone
 -- Source: Code Adapted from Week 5 materials, duckdb.org, and ChatGPT 
