@@ -1,1 +1,0 @@
-nyc_transit/target/compiled/nyc_transit/analyses/bike_trips_and_duration_by_weekday.sql
