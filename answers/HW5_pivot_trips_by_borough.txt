@@ -1,0 +1,31 @@
+.read target/compiled/nyc_transit/analyses/pivot_trips_by_borough.sql
+
+-- Analysis aggregating the count of bike and taxi trips by borough using PIVOT
+-- Source: Adapted from Week 5 materials, duckdb.org, and ChatGPT
+
+SELECT 
+    pickup_borough, -- Select the borough 
+    bike_trips, -- Number of bike trips in the borough
+    taxi_trips -- Number of taxi (FHV) trips ony for simplification  
+FROM 
+    (
+        SELECT 
+            pickup_borough, -- Borough name from the trips data
+            type -- Type of trip (bike or FHV)
+        FROM 
+            {{ ref('mart__fact_trips_by_borough') }} -- Reference the trips data table, ref vs hard code
+    )
+PIVOT 
+    (
+        COUNT(type) -- Count the number of each type
+        FOR type IN ('bike' AS bike_trips, 'fhv' AS taxi_trips) -- Pivot on trip type to create separate columns for bike and FHV trips
+    )
+ORDER BY 
+    pickup_borough; -- Order by borough
+
+┌────────────────┬────────────┬────────────┐
+│ pickup_borough │ bike_trips │ taxi_trips │
+│    varchar     │   int64    │   int64    │
+├────────────────┼────────────┼────────────┤
+│                │    4780363 │    3008649 │
+└────────────────┴────────────┴────────────┘

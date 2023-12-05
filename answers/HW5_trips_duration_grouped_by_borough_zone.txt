@@ -1,0 +1,71 @@
+D .read target/compiled/nyc_transit/analyses/trips_duration_grouped_by_borough_zone.sql
+
+-- Analysis of the number of trips and average duration by borough and zone
+-- Source: Code Adapted from Week 5 materials, duckdb.org, and ChatGPT 
+
+SELECT  
+    dl.borough, -- Select borough information from the location dimension table
+    dl.zone, -- Select zone information from the location dimension table
+    COUNT(*) AS number_of_trips, -- Count the total number of taxi trips per borough and zone
+    AVG(tt.duration_min) AS average_duration_minutes -- Average duration in minutes for trips in each borough and zone
+FROM 
+    {{ ref('mart__fact_all_taxi_trips') }} tt -- Using the fact table for all taxi trips, ref vs hard code 
+JOIN 
+    {{ ref('mart__dim_locations') }} dl -- Joining with the dimension location table, ref vs hard code 
+ON 
+    tt.pulocationid = dl.locationid -- Joining on location ID to connect trips with specific boroughs and zones
+GROUP BY 
+    dl.borough, dl.zone; -- Group by trip results on both borough and zone
+
+
+
+┌───────────────┬───────────────────────────────────┬─────────────────┬──────────────────────────┐
+│    Borough    │               Zone                │ number_of_trips │ average_duration_minutes │
+│    varchar    │              varchar              │      int64      │          double          │
+├───────────────┼───────────────────────────────────┼─────────────────┼──────────────────────────┤
+│ Manhattan     │ Midtown East                      │          403255 │       17.507467979318296 │
+│ Manhattan     │ West Chelsea/Hudson Yards         │          348791 │       18.023911167432647 │
+│ Manhattan     │ Alphabet City                     │          122990 │       17.824465403691356 │
+│ Manhattan     │ Gramercy                          │          371924 │       16.419970208967424 │
+│ Manhattan     │ Manhattanville                    │           92770 │       16.575358413280156 │
+│ Manhattan     │ Clinton West                      │          230141 │       17.669072438200928 │
+│ Manhattan     │ Times Sq/Theatre District         │          411519 │        19.64673320065416 │
+│ Manhattan     │ Central Harlem North              │          379636 │       16.297727296673656 │
+│ Brooklyn      │ Sunset Park West                  │          160556 │        19.09969107351952 │
+│ Queens        │ Old Astoria                       │          120382 │       17.217100563207126 │
+│ Queens        │ Woodside                          │          140613 │       15.855696130514248 │
+│ Bronx         │ University Heights/Morris Heights │          183443 │       15.360215434767204 │
+│ Queens        │ Queens Village                    │           90845 │       16.637393362320434 │
+│ Brooklyn      │ Prospect Heights                  │          112567 │       18.812245151776274 │
+│ Bronx         │ Van Nest/Morris Park              │          148675 │       16.050102572725745 │
+│ Queens        │ Flushing Meadows-Corona Park      │           17047 │       24.186191118671907 │
+│ Brooklyn      │ Borough Park                      │          172245 │        16.25762721704549 │
+│ Brooklyn      │ Ocean Hill                        │          179901 │        17.36178787221861 │
+│ Brooklyn      │ Brownsville                       │          263540 │       16.678010928132352 │
+│ Bronx         │ Van Cortlandt Park                │           21897 │       15.149792208978399 │
+│   ·           │    ·                              │             ·   │                ·         │
+│   ·           │    ·                              │             ·   │                ·         │
+│   ·           │    ·                              │             ·   │                ·         │
+│ Queens        │ Elmhurst                          │          246253 │        16.54295379142589 │
+│ Brooklyn      │ Red Hook                          │           63855 │       20.708433168898285 │
+│ Queens        │ Queensboro Hill                   │           42418 │       23.590480456410013 │
+│ Queens        │ North Corona                      │           85988 │       15.525177931804437 │
+│ Queens        │ Jamaica Estates                   │           50828 │       16.838848666089557 │
+│ Manhattan     │ Roosevelt Island                  │           19646 │       23.891988190980353 │
+│ Brooklyn      │ Marine Park/Mill Basin            │          104286 │       18.045212204898068 │
+│ Queens        │ Laurelton                         │           61747 │       15.780863847636322 │
+│ Brooklyn      │ Marine Park/Floyd Bennett Field   │            3598 │       21.713451917732073 │
+│ Queens        │ Whitestone                        │           43750 │        24.57638857142857 │
+│ Bronx         │ Bronxdale                         │          100726 │       15.685155769116216 │
+│ Queens        │ Springfield Gardens North         │           75061 │        16.34690451765897 │
+│ Bronx         │ Bronx Park                        │           15648 │       19.901904396728018 │
+│ Queens        │ Ozone Park                        │           53590 │       15.671319275984326 │
+│ Staten Island │ Bloomfield/Emerson Hill           │           46416 │       16.703765942778354 │
+│ Bronx         │ Crotona Park                      │            5848 │       15.787790697674419 │
+│ Bronx         │ Pelham Bay Park                   │            7961 │       15.802914206757945 │
+│ Bronx         │ Rikers Island                     │              15 │                     24.6 │
+│ Queens        │ Broad Channel                     │            1592 │        18.12939698492462 │
+│ Staten Island │ Great Kills Park                  │              63 │       18.174603174603174 │
+├───────────────┴───────────────────────────────────┴─────────────────┴──────────────────────────┤
+│ 262 rows (40 shown)                                                                  4 columns │
+└────────────────────────────────────────────────────────────────────────────────────────────────┘┘

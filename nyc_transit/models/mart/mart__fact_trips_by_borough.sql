@@ -1,4 +1,4 @@
--- File: mart__fact_trips_by_borough.sql
+-- combination of the dim_locations and mart fact table for all trips using a left join
 
 with trips_renamed as (
     select 'bike' as type, started_at_ts, ended_at_ts from {{ ref('stg__bike_data') }}

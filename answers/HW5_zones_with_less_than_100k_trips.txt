@@ -1,0 +1,69 @@
+D .read target/compiled/nyc_transit/analyses/zones_with_less_than_100k_trips.sql
+
+-- Analysis to count the number of taxi trips per zone, selecting zones with fewer than 100,000 trips
+-- Source: Adapted from Week 5 materials duckdb.org and ChatGPT
+
+SELECT 
+    dl.zone, -- Select the zone name from the location dimension table
+    COUNT(*) AS number_of_trips -- Count the total number of trips
+FROM 
+    {{ ref('mart__fact_all_taxi_trips') }} ft -- Using the all taxi trips fact table 
+JOIN 
+    {{ ref('mart__dim_locations') }} dl -- Joining with the location dimension table
+ON 
+    ft.pulocationid = dl.locationid -- Joining on location ID
+GROUP BY 
+    dl.zone -- Group by to aggregate trip counts per zone
+HAVING 
+    COUNT(*) < 100000 -- Applying Having as a filter to focus on zones with fewer than 100,000 trips
+
+┌───────────────────────────────────┬─────────────────┐
+│               Zone                │ number_of_trips │
+│              varchar              │      int64      │
+├───────────────────────────────────┼─────────────────┤
+│ Queensbridge/Ravenswood           │           54857 │
+│ Stuy Town/Peter Cooper Village    │           76075 │
+│ Columbia Street                   │           17436 │
+│ Maspeth                           │           86141 │
+│ Kew Gardens Hills                 │           55931 │
+│ Manhattan Beach                   │           37735 │
+│ Red Hook                          │           63855 │
+│ Hollis                            │           41159 │
+│ Grymes Hill/Clifton               │           34148 │
+│ Fordham South                     │           88003 │
+│ Marine Park/Floyd Bennett Field   │            3598 │
+│ Westerleigh                       │           24261 │
+│ East Flushing                     │           35664 │
+│ Cobble Hill                       │           47298 │
+│ Gowanus                           │           64439 │
+│ Glendale                          │           82127 │
+│ East Elmhurst                     │           80637 │
+│ Cambria Heights                   │           37529 │
+│ Astoria Park                      │            1396 │
+│ Far Rockaway                      │           67725 │
+│      ·                            │             ·   │
+│      ·                            │             ·   │
+│      ·                            │             ·   │
+│ Saint George/New Brighton         │           79076 │
+│ West Brighton                     │           25899 │
+│ Financial District South          │           78600 │
+│ Chinatown                         │           77615 │
+│ Westchester Village/Unionport     │           92018 │
+│ Queensboro Hill                   │           42418 │
+│ North Corona                      │           85988 │
+│ Jamaica Estates                   │           50828 │
+│ Sunset Park East                  │           79236 │
+│ Laurelton                         │           61747 │
+│ Whitestone                        │           43750 │
+│ Pelham Bay                        │           44926 │
+│ Springfield Gardens North         │           75061 │
+│ Ozone Park                        │           53590 │
+│ South Beach/Dongan Hills          │           26885 │
+│ Arrochar/Fort Wadsworth           │           18322 │
+│ Rossville/Woodrow                 │            7700 │
+│ Eltingville/Annadale/Prince's Bay │           13082 │
+│ Broad Channel                     │            1592 │
+│ Oakwood                           │           10949 │
+├───────────────────────────────────┴─────────────────┤
+│ 120 rows (40 shown)                       2 columns │
+└─────────────────────────────────────────────────────┘

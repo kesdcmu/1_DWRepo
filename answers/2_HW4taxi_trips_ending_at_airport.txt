@@ -1,2 +1,0 @@
-num_airport_trips
-1062928

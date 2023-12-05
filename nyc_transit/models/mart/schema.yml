@@ -110,20 +110,23 @@ models:
       - name: duration_sec
         description: ""
 
-  - name: mart__fact_trips_by_borough
+  - name: mart__fact_trips_by_borough ##Updated Schema to list correct feilds
     description: "number of trips grouped by pickup borough"
     columns:
-      - name: insert_timestamp	
+      - name: type
+        description: ""
+      
+      - name: started_at_ts
         description: ""
 
-      - name: event_id
+      - name: ended_at_ts
         description: ""
 
-      - name: event_type
+      - name: duration_min
         description: ""
 
-      - name: user_id
+      - name: duration_sec
         description: ""
 
-      - name: event_timestamp
+      - name: pickup_borough
         description: ""

@@ -1,0 +1,49 @@
+-- Analyzing the average number of bike trips on days before and on days with precipitation
+-- Source: Adapted from Week 5 materials, duckdb.org, and ChatGPT
+
+
+WITH Precipitation_Days AS (
+    SELECT
+        date,
+        CASE
+            WHEN prcp > 0 OR snow > 0 THEN 'Precipitation' -- Mark precipitation or snow
+            ELSE 'No_Precipitation' -- Mark days without precipitation or snow with Case When 
+        END AS weather_condition
+    FROM {{ ref('stg__central_park_weather') }} -- Reference central park weather table, ref vs hard code 
+),
+
+Bike_Trips AS (
+    SELECT
+        date_trunc('day', started_at_ts) AS trip_date, -- Truncate timestamp to date for bike trips
+        COUNT(*) AS trips -- Count the number of bike trips 
+    FROM {{ ref('mart__fact_all_bike_trips') }} -- Reference the bike trips fact table, ref vs hard code
+    GROUP BY date_trunc('day', started_at_ts) -- Group by trip date
+),
+
+Aggregated_Data AS (
+    SELECT
+        BT.trip_date, -- Bike trip date
+        PD.weather_condition, -- Weather condition on the trip date
+        LEAD(PD.weather_condition) OVER (ORDER BY BT.trip_date) AS next_day_weather, -- Weather condition of the next day
+        BT.trips -- Number of trips on the trip date
+    FROM Bike_Trips BT
+    LEFT JOIN Precipitation_Days PD ON BT.trip_date = PD.date -- Join bike trips with weather data on date
+)
+
+SELECT
+    'Day Before Precipitation' AS day_type, -- Label for day before precipitation
+    AVG(trips) AS avg_bike_trips -- Calculate the average number of trips
+FROM Aggregated_Data
+WHERE next_day_weather = 'Precipitation' -- Filter for days before precipitation
+GROUP BY day_type
+
+UNION ALL
+
+SELECT
+    'Precipitation Day' AS day_type, -- Label for days with precipitation
+    AVG(trips) AS avg_bike_trips -- Calculate the average number of trips on these days
+FROM Aggregated_Data
+WHERE weather_condition = 'Precipitation' -- Filter for days with precipitation
+GROUP BY day_type;
+
+
